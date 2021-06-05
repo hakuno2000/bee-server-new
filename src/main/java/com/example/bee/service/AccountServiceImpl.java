@@ -30,6 +30,11 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    public List<Account> getShipper(Integer type) {
+        return accountRepo.findAccountByType(type);
+    }
+
+    @Override
     public void save(Account account) {
         accountRepo.save(account);
     }

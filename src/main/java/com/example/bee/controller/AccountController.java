@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @CrossOrigin
 public class AccountController {
@@ -17,7 +20,7 @@ public class AccountController {
 //        return "Hello World";
 //    }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody Account account) {
         Account matchedAccount = accountService.login(account);
         if (matchedAccount == null) return ResponseEntity.badRequest().build();
@@ -35,5 +38,12 @@ public class AccountController {
     @GetMapping("/accounts")
     public ResponseEntity<Object> getAllAccounts() {
         return ResponseEntity.ok(accountService.findAll());
+    }
+
+    @GetMapping("/accounts/{type}")
+    public Map<String, Object> getAllAccountsByType(@PathVariable("type") Integer type) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("orders", accountService.getShipper(type));
+        return map;
     }
 }

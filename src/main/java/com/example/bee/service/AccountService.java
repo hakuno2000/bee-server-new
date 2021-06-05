@@ -8,5 +8,6 @@ public interface AccountService {
     Account findAccountByPhone(String phone);
     Account login(Account account);
     List<Account> findAll();
+    List<Account> getShipper(Integer type);
     void save(Account account);
 }
