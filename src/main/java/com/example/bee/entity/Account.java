@@ -11,7 +11,8 @@ import java.util.List;
 import java.util.Set;
 
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-@Getter @Setter
+@Getter
+@Setter
 @Entity
 @Table(name = "accounts")
 public class Account {
@@ -25,11 +26,17 @@ public class Account {
     @Column(name = "phone", nullable = false)
     private String phone;
 
+    @Column(name = "email", nullable = false)
+    private String email;
+
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "address", nullable = false)
     private String address;
+
+    @Column(name = "rate", nullable = false)
+    private double rate;
 
     @Column(name = "type", nullable = false)
     private Integer type;
@@ -37,4 +44,5 @@ public class Account {
     @JsonIgnore
     @OneToMany(mappedBy = "account")
     private List<Order> orders;
+
 }

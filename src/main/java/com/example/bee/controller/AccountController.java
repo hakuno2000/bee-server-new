@@ -14,12 +14,6 @@ import java.util.Map;
 public class AccountController {
     @Autowired
     private AccountService accountService;
-
-//    @GetMapping("")
-//    public String trySomething() {
-//        return "Hello World";
-//    }
-
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody Account account) {
         Account matchedAccount = accountService.login(account);
@@ -34,7 +28,10 @@ public class AccountController {
         if (matchedAccount == null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(matchedAccount);
     }
-
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<Object> getProfile(@PathVariable("id") long id) {
+        return ResponseEntity.ok(accountService.findAccountById(id));
+    }
     @GetMapping("/accounts")
     public ResponseEntity<Object> getAllAccounts() {
         return ResponseEntity.ok(accountService.findAll());
@@ -43,7 +40,7 @@ public class AccountController {
     @GetMapping("/accounts/{type}")
     public Map<String, Object> getAllAccountsByType(@PathVariable("type") Integer type) {
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("orders", accountService.getShipper(type));
+        map.put("accounts", accountService.getShipper(type));
         return map;
     }
 }

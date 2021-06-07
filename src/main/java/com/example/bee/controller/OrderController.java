@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -57,14 +58,11 @@ public class OrderController {
         return ResponseEntity.ok(orderService.findOrdersNotCompleted());
     }
 
-    @GetMapping("/my/shipping")
-    public ResponseEntity<Object> getMyShippingOrders(@RequestBody Account account) {
-        return ResponseEntity.ok(orderService.findShippingOrdersByAccount_Phone(account.getPhone()));
-    }
-
-    @GetMapping("/my/completed")
-    public ResponseEntity<Object> getMyCompletedOrders(@RequestBody Account account) {
-        return ResponseEntity.ok(orderService.findCompletedOrdersByAccount_Phone(account.getPhone()));
+    @GetMapping("/my-order")
+    public Map<String, Object> getMyShippingOrders(@RequestParam long status, long id) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("orders", orderService.findOrdersByAccount_IdAndStatus(id, status));
+        return map;
     }
 
     @PostMapping("/create")
@@ -76,5 +74,14 @@ public class OrderController {
         order.setOrderNo("Od" + LocalDateTime.now().format(formatter) + "No" + orderService.findAll().size());
         orderService.save(order);
         return ResponseEntity.ok(order);
+    }
+
+    @PostMapping("/forward")
+    public void setForwardOrder(@RequestBody Forward forward) {
+        orderService.forwardToShipper(forward.orderId, forward.shipperId);
+    }
+    @PostMapping("/done")
+    public void doneOrder(@RequestBody Forward forward) {
+        orderService.doneOrder(forward.orderId, forward.shipperId);
     }
 }

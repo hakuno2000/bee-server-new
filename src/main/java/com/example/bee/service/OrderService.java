@@ -11,8 +11,9 @@ public interface OrderService {
     List<Order> findAllByUserId(long userId);
     List<Order> findOrdersNotCompleted();
     List<Order> findOrdersByStatus(long status);
-    List<Order> findShippingOrdersByAccount_Phone(String account_phone);
-    List<Order> findCompletedOrdersByAccount_Phone(String account_phone);
+    List<Order> findOrdersByAccount_IdAndStatus(long account_id, long status);
     Order findOrderById(long id);
     void save(Order order);
+    void forwardToShipper(long orderId, long shipperId);
+    void doneOrder(long orderId, long shipperId);
 }

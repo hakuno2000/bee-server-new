@@ -18,6 +18,11 @@ public class AccountServiceImpl implements AccountService{
     }
 
     @Override
+    public Account findAccountById(long id) {
+        return accountRepo.findAccountById(id);
+    }
+
+    @Override
     public Account login(Account account) {
         Account matchedAccount = accountRepo.findAccountByPhone(account.getPhone());
         if (matchedAccount.getPassword().equals(account.getPassword())) return matchedAccount;
@@ -38,4 +43,6 @@ public class AccountServiceImpl implements AccountService{
     public void save(Account account) {
         accountRepo.save(account);
     }
+
+
 }
